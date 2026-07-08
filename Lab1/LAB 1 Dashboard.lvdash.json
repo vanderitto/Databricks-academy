@@ -1,0 +1,248 @@
+{
+  "datasets": [
+    {
+      "name": "636907a6",
+      "displayName": "bikes_gold",
+      "config": {
+        "version": "1.1",
+        "source": "dbr_dev.jvanderbrug.bikes_gold",
+        "dimensions": [
+          {
+            "name": "date_only",
+            "expr": "source.date_only",
+            "displayName": "Date Only"
+          },
+          {
+            "name": "total_daily_bikes",
+            "expr": "source.total_daily_bikes",
+            "displayName": "Total Daily Bikes"
+          },
+          {
+            "name": "max_temp_C",
+            "expr": "source.max_temp_C",
+            "displayName": "Max Temp C"
+          },
+          {
+            "name": "min_temp_C",
+            "expr": "source.min_temp_C",
+            "displayName": "Min Temp C"
+          },
+          {
+            "name": "avg_wind_speed",
+            "expr": "source.avg_wind_speed",
+            "displayName": "Avg Wind Speed"
+          },
+          {
+            "name": "temp_amplitude",
+            "expr": "source.temp_amplitude",
+            "displayName": "Temp Amplitude"
+          },
+          {
+            "name": "holiday_name",
+            "expr": "source.holiday_name",
+            "displayName": "Holiday Name"
+          },
+          {
+            "name": "is_decorated",
+            "expr": "source.is_decorated",
+            "displayName": "Is Decorated"
+          },
+          {
+            "name": "holiday_type",
+            "expr": "source.holiday_type",
+            "displayName": "Holiday Type"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "db86439d",
+      "displayName": "Dashboards",
+      "layout": [
+        {
+          "widget": {
+            "name": "wplyw-temperatury-na-liczbe-wypozyczen",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "636907a6",
+                  "fields": [
+                    {
+                      "name": "max_temp_C",
+                      "expression": "`max_temp_C`"
+                    },
+                    {
+                      "name": "total_daily_bikes",
+                      "expression": "`total_daily_bikes`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "The impact of temperature on rentals"
+              },
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "max_temp_C",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "total_daily_bikes",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "loan-trend-over-time",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "636907a6",
+                  "fields": [
+                    {
+                      "name": "monthly(date_only)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `date_only`)"
+                    },
+                    {
+                      "name": "sum(total_daily_bikes)",
+                      "expression": "SUM(`total_daily_bikes`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Loan Trend Over Time"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(date_only)",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(total_daily_bikes)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "weather-trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "636907a6",
+                  "fields": [
+                    {
+                      "name": "monthly(date_only)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `date_only`)"
+                    },
+                    {
+                      "name": "avg(min_temp_C)",
+                      "expression": "AVG(`min_temp_C`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Weather trend"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(date_only)",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(min_temp_C)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
